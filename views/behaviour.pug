@@ -1,0 +1,220 @@
+extends layout
+
+block content
+    #parent
+        #narrow
+            .control-group  
+                .select
+                    select#dataset(name='dataset')
+                        option(value = "10000") 10000 processes
+                        option(value = "20000") 20000 processes
+                        option(value = "50000") 50000 processes
+                    .select__arrow
+                .select
+                    select#graphtype(name='graph')
+                        option(value='wait') wait time
+                        option(value='nTAT') normalised TAT
+                    .select__arrow
+                h1 Algorithms
+                label.control.control--checkbox FCFS
+                    input#FCFS(type='checkbox')
+                    .control__indicator
+                label.control.control--checkbox RR (q = 2)
+                    input#RRone(type='checkbox')
+                    .control__indicator
+                label.control.control--checkbox RR (q = 4)
+                    input#RRtwo(type='checkbox')
+                    .control__indicator
+                label.control.control--checkbox RR (q = 8)
+                    input#RRthree(type='checkbox')
+                    .control__indicator
+                label.control.control--checkbox SJF
+                    input#SJF(type='checkbox')
+                    .control__indicator
+                label.control.control--checkbox SRT
+                    input#SRT(type='checkbox')
+                    .control__indicator
+                label.control.control--checkbox HRRN
+                    input#HRRN(type='checkbox')
+                    .control__indicator
+                label.control.control--checkbox MLFB (linear)
+                    input#MLFBone(type='checkbox')
+                    .control__indicator
+                label.control.control--checkbox MLFB (constant)
+                    input#MLFBtwo(type='checkbox')
+                    .control__indicator
+                input.button.pulse#fireAjax(type='button' value='Compile Chart' onclick='getData()')
+        #wide
+            .chart#chartContainer
+
+    script.
+        function getData(){
+            let datacollection = [];
+
+            const xmlSize  = document.getElementById('dataset').value;
+            const graphtype = document.getElementById('graphtype').value;
+
+            let maxs = 10;
+            if(graphtype == 'nTAT') maxs = 100;
+
+            let mins = 0;
+            if(graphtype == 'nTAT') mins = 1;
+
+            if(document.getElementById('FCFS').checked){
+                const string = '../api/FCFS?dataset='+xmlSize+'&graph='+graphtype;
+                $.getJSON(string, addData).then(function () {
+                    datacollection[datacollection.length-1].name = "FCFS";
+                    datacollection[datacollection.length-1].color = "blue";
+                    chart.render()
+                })
+            };
+
+            if(document.getElementById('RRone').checked){
+                const string = '../api/RR?dataset='+xmlSize+'&graph='+graphtype+'&slice=2';
+                $.getJSON(string, addData).then(function () {
+                    datacollection[datacollection.length-1].name = "RR (q=2)";
+                    datacollection[datacollection.length-1].color = "grey";
+                    chart.render()
+                })
+            };
+
+            if(document.getElementById('RRtwo').checked){
+                const string = '../api/RR?dataset='+xmlSize+'&graph='+graphtype+'&slice=4';
+                $.getJSON(string, addData).then(function () {
+                    datacollection[datacollection.length-1].name = "RR (q=4)";
+                    datacollection[datacollection.length-1].color = "dimGrey";
+                    chart.render()
+                })
+            };
+
+            if(document.getElementById('RRthree').checked){
+                const string = '../api/RR?dataset='+xmlSize+'&graph='+graphtype+'&slice=8';
+                $.getJSON(string, addData).then(function () {
+                    datacollection[datacollection.length-1].name = "RR (q=8)";
+                    datacollection[datacollection.length-1].color = "black";
+                    chart.render()
+                })
+            };
+            
+            if(document.getElementById('SJF').checked){
+                const string = '../api/SJF?dataset='+xmlSize+'&graph='+graphtype;
+                $.getJSON(string, addData).then(function () {
+                    datacollection[datacollection.length-1].name = "SJF";
+                    datacollection[datacollection.length-1].color = "green";
+                    chart.render()
+                })
+            };
+
+            if(document.getElementById('SRT').checked) {
+                const string = '../api/SRT?dataset='+xmlSize+'&graph='+graphtype;
+                $.getJSON(string, addData).then(function () {
+                    datacollection[datacollection.length-1].name = "SRT";
+                    datacollection[datacollection.length-1].color = "yellow";
+                    chart.render()
+                })
+            };
+
+            if(document.getElementById('HRRN').checked) {
+                const string = '../api/HRRN?dataset='+xmlSize+'&graph='+graphtype;
+                $.getJSON(string, addData).then(function () {
+                    datacollection[datacollection.length-1].name = "HRRN";
+                    datacollection[datacollection.length-1].color = "red";
+                    chart.render()
+                })
+            };
+
+            if(document.getElementById('MLFBone').checked){
+                const string = '../api/MLFB?dataset='+xmlSize+'&graph='+graphtype+'&type=linear';
+                $.getJSON(string, addData).then(function () {
+                    datacollection[datacollection.length-1].name = "MLFB (linear)";
+                    datacollection[datacollection.length-1].color = "slateblue";
+                    chart.render()
+                })
+            };
+
+            if(document.getElementById('MLFBtwo').checked){
+                const string = '../api/MLFB?dataset='+xmlSize+'&graph='+graphtype+'&type=exponential';
+                $.getJSON(string, addData).then(function () {
+                    datacollection[datacollection.length-1].name = "MLFB (constant)";
+                    datacollection[datacollection.length-1].color = "aquamarine";
+                    chart.render()
+                })
+            }
+            
+            let logs = (graphtype == 'nTAT');
+
+            let yaxis;
+            if(graphtype == 'wait'){
+                yaxis = "wait time [s]";
+            } else yaxis = "normalised TAT";
+            
+            function addData(data){
+                let datta = []
+                for (var i = 0; i < data.length; i++) {
+                    datta.push({
+                        x: data[i].percentile,
+                        y: data[i].value
+                    });
+                }
+                let datafield = {
+                    type: "spline",
+                    name: "test",
+                    color: "black",
+                    showInLegend: true,
+                    dataPoints: datta
+                }
+                datacollection.push(datafield);
+            }
+
+            var chart = new CanvasJS.Chart("chartContainer", 
+            {
+                axisY: {
+                    title: yaxis,
+                    logarithmic: logs,
+                    labelFontSize: 24,
+                    maximum: maxs,
+                    minimum: mins
+                },
+                axisX: {
+                    title: 'service time (percentile)',
+                    labelFontSize: 24,
+                    interval: 10
+                },
+                exportEnabled: true,
+                toolTip:{
+                    shared: true
+                },
+                legend:{
+                    cursor: "pointer",
+                    dockInsidePlotArea: true,
+                    verticalAlign: "top",
+                    horizontalAlign: "center",
+                    itemmouseover: function(e) {
+                        e.dataSeries.lineThickness = e.chart.data[e.dataSeriesIndex].lineThickness * 2;
+                        e.dataSeries.markerSize = e.chart.data[e.dataSeriesIndex].markerSize + 2;
+                        e.chart.render();
+                        },
+                    itemmouseout: function(e) {
+                        e.dataSeries.lineThickness = e.chart.data[e.dataSeriesIndex].lineThickness / 2;
+                        e.dataSeries.markerSize = e.chart.data[e.dataSeriesIndex].markerSize - 2;
+                        e.chart.render();
+                        },
+                    itemclick: function (e) {
+                        if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                            e.dataSeries.visible = false;
+                            } else {
+                                e.dataSeries.visible = true;
+                                }
+                            e.chart.render();
+                        }
+                },
+                data : datacollection
+            }
+            );
+
+            chart.render();
+        }
+        
+
+    script(src = "https://canvasjs.com/assets/script/jquery-1.11.1.min.js")
+    script(src = "https://canvasjs.com/assets/script/jquery.canvasjs.min.js")

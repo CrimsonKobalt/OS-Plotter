@@ -1,0 +1,19 @@
+doctype html
+html
+  head
+    title= "OS-Plotter"
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='icon', type='image/png', sizes='32x32', href='/images/favicon-32x32.png')
+    link(rel='icon', type='image/png', sizes='16x16', href='/images/favicon-16x16.png')
+    script(src = "https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js")
+  body
+    header.site-header
+      nav
+        a.left(href='/') OS Plotter
+        a(href='https://github.com/CrimsonKobalt?tab=repositories') Documentation
+        a(href='/scheduling') Plot
+        a(href='/') Home
+          
+    block content
