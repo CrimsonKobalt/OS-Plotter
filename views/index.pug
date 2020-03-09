@@ -1,40 +1,36 @@
 extends layout
 
 block content
-  .grid-container
-    .IndexContainer
-      .IndexTextContainer
-        .control-group2
-          h1 Welcome to OS Plotter!
+    #indexContainer
+        #indexLeft
+            .IndexTextContainer
+                h1 Welcome to OS Plotter!
 
-          p.
-            This is a small software project set up by Christophe De Backer for the KU-Leuven course 'Operating Systems 2'.
-            The entirity of the code is open-source and available on GitHub <a href="http://example.com">here</a>.
-          h2 What does OS Plotter do?
-          p.
-            OS Plotter is a nodejs-based application that visually represents the effectiveness (wait time & normalised turnaround-time) of certain scheduling algorithms
-            in function of their required service time. For Round Robin, three different implementations with timeslices of respectively
-            20, 40 and 80ms are provided and for Multilevel Feedback the choice was made for 2 implementations, each with 5 priority levels.
-            The first one has a linear progression of CPU-time (100,200,300,400,500 ms), the second one has a constant CPU time (100ms for each queue).
-          p.
-            To get started, simply navigate to 'Plot' and try out the plotting tool! Three sample datasets are present so you can
-            choose whichever one you like: choose some algorithms and press GO.
-          h2 The OS Plotter API
-          p.
-            If you wish to use this data yourself, there is an API available. To get started refer to the API-documentation on GitHub.
-            Do be aware that the server has to process each request separately, so response times might vary.
-          h3 some example API requests
-          p <a href="../api/FCFS?dataset=20000&graph=wait">FCFS (Tw)</a>
-          p <a href="../api/FCFS?dataset=20000&graph=nTAT">FCFS (nTAT)</a>
-          p <a href="../api/SJF?dataset=20000&graph=nTAT">SJF</a>
-          p <a href="../api/RR?dataset=20000&graph=wait&slice=20">RR (CPU-time = 200ms)</a>
-          p <a href="../api/MLFB?dataset=20000&graph=wait&type=linear">MLFB (linear)</a>
-      .IndexPicture1
-        .control-group2
-          img(src='/images/example-chart.png')
-      .IndexPicture2
-        .control-group2
-          img(src='/images/sample-api-response.png')
-    
-
-
+                p.
+                    This is a small software project set up by Christophe De Backer for the KU-Leuven course 'Operating Systems 2'.
+                    The entirity of the code is open-source and available on GitHub <a href="https://github.com/CrimsonKobalt?tab=repositories">here</a>.
+                h2 What does OS Plotter do?
+                p.
+                    OS Plotter is a nodejs-based application that visually represents the effectiveness (wait time & normalised turnaround-time) of certain scheduling algorithms
+                    in function of their required service time. For Round Robin, three different implementations with timeslices of respectively
+                    20, 40 and 80ms are provided and for Multilevel Feedback the choice was made for 2 implementations, each with 5 priority levels.
+                    The first one has a linear progression of CPU-time (100,200,300,400,500 ms), the second one has a constant CPU time (100ms for each queue).
+                p.
+                    To get started, simply navigate to 'Plot' and try out the plotting tool! Three sample datasets are present so you can
+                    choose whichever one you like: choose some algorithms and press GO!
+                h2 The OS Plotter API
+                p.
+                    If you wish to use this data yourself, there is an API available. To get started refer to the API-documentation on GitHub.
+                    Do be aware that the server has to process each request separately, so response times might vary.
+                h2 API requests: examples
+                p <a href="../api/FCFS?dataset=20000&graph=wait">FCFS (Tw)</a>
+                p <a href="../api/FCFS?dataset=20000&graph=nTAT">FCFS (nTAT)</a>
+                p <a href="../api/SJF?dataset=20000&graph=nTAT">SJF</a>
+                p <a href="../api/RR?dataset=20000&graph=wait&slice=20">RR (CPU-time = 200ms)</a>
+                p <a href="../api/MLFB?dataset=20000&graph=wait&type=linear">MLFB (linear)</a>
+        #indexRight
+            .imageContainer
+                img(src='/images/example-chart.png')
+            .imageContainer
+                img(src='/images/sample-api-response.png')
+            
