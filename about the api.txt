@@ -4,12 +4,14 @@ you can use this api to get the data for processing,
 however be aware that according to traffic this might be quite slow.
 
 to use the api:
- {###.herokuapp.com}/api/{algorithm shorthand}?dataset={dataset}&graph={graphtype}&slice={RR timeslice}&type={MLFB type}
+ op-plotter.herokuapp.com/api/{algorithm shorthand}?dataset={dataset}&graph={graphtype}&slice={RR timeslice}&type={MLFB type}
  
- {dataset}: either 10000, 20000, 50000
+ {algorithm shorthand}: FCFS, RR, SJF, SRT, HRRN, MLFB
+ 
+ {dataset}: either 10000, 20000, 50000: preprogrammed sets of data to give a statistically significant result
  {graphtype}: either 'wait' or 'nTAT' (normalised turnaround time)
  {slice}: only for RR (in JIFFY's: 1 JIFFY = 10ms)
- {MLFB type}: default is constant, if you want the linear distribution use 'linear'
+ {MLFB type}: only for MLFB: default is constant, if you want the linear distribution use 'linear'
  
  response will be formatted in JSON as follows:
  [{percentile=1, value=x},{second datapoint},...{percentile=100, value=y}]
