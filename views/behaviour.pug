@@ -54,7 +54,7 @@ block content
             const xmlSize  = document.getElementById('dataset').value;
             const graphtype = document.getElementById('graphtype').value;
 
-            let maxs = 10;
+            let maxs = 30;
             if(graphtype == 'nTAT') maxs = 100;
 
             let mins = 0;
@@ -152,7 +152,7 @@ block content
                 let datta = []
                 for (var i = 0; i < data.length; i++) {
                     datta.push({
-                        x: data[i].percentile,
+                        x: data[i].serviceTime,
                         y: data[i].value
                     });
                 }
@@ -176,9 +176,8 @@ block content
                     minimum: mins
                 },
                 axisX: {
-                    title: 'service time (percentile)',
-                    labelFontSize: 24,
-                    interval: 10
+                    title: 'service time [s]',
+                    labelFontSize: 24
                 },
                 exportEnabled: true,
                 toolTip:{

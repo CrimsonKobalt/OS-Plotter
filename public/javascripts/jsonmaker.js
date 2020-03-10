@@ -10,7 +10,7 @@ module.exports = function select(dataset, attribute) {
         case "ntat":
             for(let i = 0; i<100; i++){
                 let value = {
-                    percentile: i+1,
+                    serviceTime: parseInt(dataset[i].getServiceTime()),
                     value : parseFloat(dataset[i].get_nTAT().toFixed(3))
                 }
                 newArray.push(value)
@@ -19,7 +19,7 @@ module.exports = function select(dataset, attribute) {
         case "wait":
             for(let i = 0; i<100; i++){
                 let value = {
-                    percentile: i+1,
+                    serviceTime: parseInt(dataset[i].getServiceTime()),
                     value : parseFloat((dataset[i].getWaitTime()/100).toFixed(3))
                 }
                 newArray.push(value)
