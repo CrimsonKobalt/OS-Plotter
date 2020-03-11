@@ -83,4 +83,8 @@ router.get('/MLFB', function(req, res, next) {
     res.json(result);
 })
 
+router.get('/', function(req, res, next) {
+    res.redirect('../');
+})
+
 module.exports = router;

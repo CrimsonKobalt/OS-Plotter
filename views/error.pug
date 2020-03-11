@@ -1,6 +1,9 @@
 extends layout
 
 block content
-  h1= message
-  h2= error.status
-  pre #{error.stack}
+  #narrow
+    h2= error.status
+    p.
+      Something went wrong on our end, that's all we know.
+      Please contact a server admin to let us know how you got here!
+    //pre #{error.stack}

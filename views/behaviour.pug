@@ -15,6 +15,11 @@ block content
                         option(value='wait') wait time
                         option(value='nTAT') normalised TAT
                     .select__arrow
+                .select
+                    select#Xval(name = "Xval")
+                        option(value = "serviceTime") service time
+                        option(value = "percentile") percentile
+                    .select__arrow
                 h1 Algorithms
                 label.control.control--checkbox FCFS
                     input#FCFS(type='checkbox')
@@ -53,8 +58,18 @@ block content
 
             const xmlSize  = document.getElementById('dataset').value;
             const graphtype = document.getElementById('graphtype').value;
+            const xval = document.getElementById('Xval').value;
 
+            let interval = 1;
             let maxs = 30;
+            let xtext = "service time [s]";
+            if(xval == 'percentile'){
+                interval = 10;
+                xtext = "percentile";
+                maxs = 10;
+            } 
+
+
             if(graphtype == 'nTAT') maxs = 100;
 
             let mins = 0;
@@ -151,10 +166,17 @@ block content
             function addData(data){
                 let datta = []
                 for (var i = 0; i < data.length; i++) {
-                    datta.push({
-                        x: data[i].serviceTime,
-                        y: data[i].value
-                    });
+                    if(xval == 'percentile'){
+                        datta.push({
+                            x: data[i].percentile,
+                            y: data[i].value
+                        }) 
+                    } else {
+                        datta.push({
+                            x: data[i].serviceTime,
+                            y: data[i].value
+                        })
+                    }
                 }
                 let datafield = {
                     type: "spline",
@@ -173,10 +195,32 @@ block content
                     logarithmic: logs,
                     labelFontSize: 24,
                     maximum: maxs,
-                    minimum: mins
+                    minimum: mins,
+                    gridThickness: 0,
+                    stripLines: [{
+                        color: "black",
+                        value: 10
+                    },
+                    {
+                        color: "black",
+                        value: 100
+                    },
+                    {
+                        color: "black",
+                        value: 5
+                    },
+                    {
+                        color: "black",
+                        value: 30
+                    },
+                    {
+                        color: "black",
+                        value: 20
+                    }]
                 },
                 axisX: {
-                    title: 'service time [s]',
+                    title: xtext,
+                    interval: interval,
                     labelFontSize: 24
                 },
                 exportEnabled: true,

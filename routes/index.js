@@ -17,4 +17,8 @@ router.get('/', function(req, res, next) {
   res.render('../views/index');
 });
 
+router.all('*', function(req, res){
+  res.redirect('/');
+});
+
 module.exports = router;
